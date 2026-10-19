@@ -1,0 +1,48 @@
+{
+  "info": {
+    "_postman_id": "e6c9e8b1-251a-4e0b-a714-ict251notice",
+    "name": "ICT251 - CampusPulse School Event Noticeboard API",
+    "description": "Tests all five required REST endpoints. Run requests in order. The POST request stores its created ID for the GET, PUT and DELETE requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "createdId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "1. GET - List all notices",
+      "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/notices", "description": "Expected: 200 OK with success, count and data array." },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));", "pm.test('JSON includes notices array', () => { const json = pm.response.json(); pm.expect(json.success).to.eql(true); pm.expect(json.data).to.be.an('array'); });"] } }]
+    },
+    {
+      "name": "2. POST - Create notice",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"event_title\": \"Postman API Testing Workshop\",\n  \"category\": \"Academic\",\n  \"description\": \"A practical session demonstrating REST API requests and responses.\",\n  \"venue\": \"Computer Lab 2\",\n  \"event_date\": \"2026-11-20\",\n  \"organizer\": \"ICT251 Project Team\",\n  \"status\": \"Upcoming\"\n}", "options": { "raw": { "language": "json" } } },
+        "url": "{{baseUrl}}/api/notices", "description": "Expected: 201 Created and the new record in data."
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Status is 201', () => pm.response.to.have.status(201));", "const json = pm.response.json();", "if (json.data && json.data.id) pm.collectionVariables.set('createdId', json.data.id);", "pm.test('Created notice has an ID', () => pm.expect(json.data.id).to.be.a('number')); "] } }]
+    },
+    {
+      "name": "3. GET - Get one notice created above",
+      "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/notices/{{createdId}}", "description": "Expected: 200 OK and one notice object." },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));", "pm.test('Returned ID matches created ID', () => pm.expect(pm.response.json().data.id).to.eql(Number(pm.collectionVariables.get('createdId'))));"] } }]
+    },
+    {
+      "name": "4. PUT - Update created notice",
+      "request": {
+        "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"event_title\": \"Postman API Testing Workshop - Updated\",\n  \"category\": \"Academic\",\n  \"description\": \"Updated description after testing the PUT endpoint.\",\n  \"venue\": \"Computer Lab 3\",\n  \"event_date\": \"2026-11-21\",\n  \"organizer\": \"ICT251 Project Team\",\n  \"status\": \"Ongoing\"\n}", "options": { "raw": { "language": "json" } } },
+        "url": "{{baseUrl}}/api/notices/{{createdId}}", "description": "Expected: 200 OK and updated fields in data."
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));", "pm.test('Title was updated', () => pm.expect(pm.response.json().data.event_title).to.include('Updated')); "] } }]
+    },
+    {
+      "name": "5. DELETE - Delete created notice",
+      "request": { "method": "DELETE", "header": [], "url": "{{baseUrl}}/api/notices/{{createdId}}", "description": "Expected: 200 OK and confirmation JSON. This deletes the temporary record created in request 2." },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Status is 200', () => pm.response.to.have.status(200));", "pm.test('Delete confirmation returned', () => pm.expect(pm.response.json().success).to.eql(true));"] } }]
+    }
+  ]
+}

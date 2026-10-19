@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 5ce248fd-1bc4-4a69-8040-898c50d246c2
+
+cloudResources:
+  collections:
+    ../postman/collections/ICT251 - CampusPulse School Event Noticeboard API: 1eabcd47-5dcf-448d-95a1-8db148212da3
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/

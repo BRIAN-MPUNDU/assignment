@@ -1,0 +1,27 @@
+$kind: http-request
+description: "Expected: 201 Created and the new record in data."
+url: "{{baseUrl}}/api/notices"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "event_title": "Postman API Testing Workshop",
+      "category": "Academic",
+      "description": "A practical session demonstrating REST API requests and responses.",
+      "venue": "Computer Lab 2",
+      "event_date": "2026-11-20",
+      "organizer": "ICT251 Project Team",
+      "status": "Upcoming"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 201', () => pm.response.to.have.status(201));
+      const json = pm.response.json();
+      if (json.data && json.data.id) pm.collectionVariables.set('createdId', json.data.id);
+      pm.test('Created notice has an ID', () => pm.expect(json.data.id).to.be.a('number')); 
+    language: text/javascript
+order: 2000

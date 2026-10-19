@@ -1,0 +1,11 @@
+$kind: http-request
+description: "Expected: 200 OK and confirmation JSON. This deletes the temporary record created in request 2."
+url: "{{baseUrl}}/api/notices/{{createdId}}"
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      pm.test('Delete confirmation returned', () => pm.expect(pm.response.json().success).to.eql(true));
+    language: text/javascript
+order: 5000

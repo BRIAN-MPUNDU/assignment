@@ -1,0 +1,11 @@
+$kind: http-request
+description: "Expected: 200 OK with success, count and data array."
+url: "{{baseUrl}}/api/notices"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      pm.test('JSON includes notices array', () => { const json = pm.response.json(); pm.expect(json.success).to.eql(true); pm.expect(json.data).to.be.an('array'); });
+    language: text/javascript
+order: 1000

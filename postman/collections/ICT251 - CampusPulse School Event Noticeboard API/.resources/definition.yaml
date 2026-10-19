@@ -1,0 +1,5 @@
+$kind: collection
+description: Tests all five required REST endpoints. Run requests in order. The POST request stores its created ID for the GET, PUT and DELETE requests.
+variables:
+  baseUrl: http://localhost:3000
+  createdId: "1"

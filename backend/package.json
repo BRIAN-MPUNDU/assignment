@@ -1,0 +1,27 @@
+{
+  "name": "ict251-school-event-noticeboard-api",
+  "version": "1.0.0",
+  "description": "ICT251 single-table CRUD REST API for a School Event Noticeboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "mysql2": "^3.24.6",
+    "sqlite3": "^6.0.1"
+  },
+  "allowScripts": {
+    "sqlite3@5.1.7": true
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

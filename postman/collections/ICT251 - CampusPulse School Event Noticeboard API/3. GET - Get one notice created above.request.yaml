@@ -1,0 +1,11 @@
+$kind: http-request
+description: "Expected: 200 OK and one notice object."
+url: "{{baseUrl}}/api/notices/{{createdId}}"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      pm.test('Returned ID matches created ID', () => pm.expect(pm.response.json().data.id).to.eql(Number(pm.collectionVariables.get('createdId'))));
+    language: text/javascript
+order: 3000
